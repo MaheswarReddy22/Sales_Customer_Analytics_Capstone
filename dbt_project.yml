@@ -1,0 +1,45 @@
+name: 'sales_customer_analytics_capstone'
+version: '1.0.0'
+config-version: 2
+
+profile: 'default'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  elementary:
+    elementary_schema: elementary
+    target_schema: elementary
+
+models:
+  sales_customer_analytics_capstone:
+    bronze:
+      +materialized: incremental
+      +incremental_strategy: merge
+      +schema: BRONZE
+    silver:
+      +materialized: table
+      +schema: SILVER
+    gold:
+      +materialized: table
+      +schema: GOLD
+      reporting:
+        +materialized: view
+
+  elementary:
+    +schema: elementary
+
+snapshots:
+  sales_customer_analytics_capstone:
+    +target_schema: SILVER

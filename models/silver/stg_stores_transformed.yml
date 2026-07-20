@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: stg_stores_transformed
+    description: Cleaned and enriched store data.
+
+    columns:
+      - name: store_id
+        tests:
+          - unique
+          - not_null
+
+      - name: manager_id
+        tests:
+          - not_null
+
+      - name: size_category
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - Small
+                  - Medium
+                  - Large
+
+      - name: has_performance_issue
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - true
+                  - false
+
+      - name: is_active
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - true
+                  - false

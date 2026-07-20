@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: stg_orders_transformed
+    description: Enriched order transactions.
+
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+      - name: customer_id
+        tests:
+          - not_null
+
+      - name: employee_id
+        tests:
+          - not_null
+
+      - name: store_id
+        tests:
+          - not_null
+
+      - name: product_id
+        tests:
+          - not_null
+
+      - name: delivery_status
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - On Time
+                  - Delayed
+                  - Potentially Delayed
+                  - In Transit
+
+      - name: order_time_of_day
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - Morning
+                  - Afternoon
+                  - Evening
+                  - Night

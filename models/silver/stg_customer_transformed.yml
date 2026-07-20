@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: stg_customer_transformed
+    description: Cleaned and enriched customer data.
+
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+
+      - name: age_segment
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - Young
+                  - Middle-aged
+                  - Senior
+
+      - name: is_current
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - true
+                  - false

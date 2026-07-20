@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+
+  - name: raw
+
+    database: CT_MAHESWARREDDY_P_DB
+
+    schema: RAW
+
+    tables:
+
+      - name: CUSTOMERS_EXT
+
+      - name: ORDERS_EXT
+
+      - name: PRODUCTS_EXT
+
+      - name: STORES_EXT
+
+      - name: EMPLOYEES_EXT
+
+      - name: SUPPLIERS_EXT
+
+      - name: CAMPAIGNS_EXT

@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: stg_products_transformed
+    description: Cleaned and enriched product data.
+
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+
+      - name: supplier_id
+        tests:
+          - not_null
+
+      - name: is_low_stock
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - true
+                  - false
+
+      - name: is_featured
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - true
+                  - false
