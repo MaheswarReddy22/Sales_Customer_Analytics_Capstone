@@ -2,21 +2,22 @@ SELECT
 
     p.category,
 
-    COUNT(DISTINCT f.order_id) AS total_orders,
+    p.subcategory,
 
-    SUM(f.quantity_sold) AS total_quantity_sold,
+    SUM(f.line_revenue) AS total_sales,
 
-    ROUND(SUM(f.gross_sales_amount), 2) AS total_sales,
+    SUM(f.quantity_sold) AS total_quantity,
 
-    ROUND(SUM(f.profit_amount), 2) AS total_profit,
-
-    ROUND(AVG(f.profit_margin_percentage), 2) AS average_profit_margin
+    SUM(f.profit_amount) AS total_profit
 
 FROM {{ ref('fact_sales') }} f
 
 JOIN {{ ref('dim_product') }} p
-    ON f.product_key = p.product_key
+ON f.product_key = p.product_key
 
-GROUP BY p.category
+GROUP BY
+
+    p.category,
+    p.subcategory
 
 ORDER BY total_sales DESC

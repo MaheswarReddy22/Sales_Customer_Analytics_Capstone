@@ -45,32 +45,87 @@ transformed AS (
 
         total_amount,
 
-        (quantity * unit_price * (1 - item_discount_amount)) AS line_revenue,
+        (
+            quantity
+            * unit_price
+            * (1 - (item_discount_amount / 100.0))
+        ) AS line_revenue,
 
-        (quantity * cost_price) AS line_cost,
+        (
+            quantity * cost_price
+        ) AS line_cost,
 
-        ((quantity * unit_price * (1 - item_discount_amount)) * (1 - order_discount_amount))
-            - (quantity * cost_price) - shipping_cost - tax_amount AS profit_amount,
+        (
+            (
+                quantity
+                * unit_price
+                * (1 - (item_discount_amount / 100.0))
+            )
+            *
+            (1 - (order_discount_amount / 100.0))
+        )
+        - (quantity * cost_price)
+        - shipping_cost
+        - tax_amount
+        AS profit_amount,
 
         CASE
-            WHEN (quantity * unit_price * (1 - item_discount_amount)) > 0
-            THEN (
+
+            WHEN
+            (
+                quantity
+                * unit_price
+                * (1 - (item_discount_amount / 100.0))
+            ) > 0
+
+            THEN
+
                 (
-                    ((quantity * unit_price * (1 - item_discount_amount)) * (1 - order_discount_amount))
-                    - (quantity * cost_price) - shipping_cost - tax_amount
+                    (
+                        (
+                            quantity
+                            * unit_price
+                            * (1 - (item_discount_amount / 100.0))
+                        )
+                        *
+                        (1 - (order_discount_amount / 100.0))
+                    )
+                    - (quantity * cost_price)
+                    - shipping_cost
+                    - tax_amount
                 )
-                / (quantity * unit_price * (1 - item_discount_amount))
-            ) * 100
+
+                /
+
+                (
+                    quantity
+                    * unit_price
+                    * (1 - (item_discount_amount / 100.0))
+                )
+
+                * 100
+
             ELSE NULL
+
         END AS profit_margin_percentage,
 
         EXTRACT(HOUR FROM order_date) AS order_hour,
 
         CASE
-            WHEN EXTRACT(HOUR FROM order_date) >= 5 AND EXTRACT(HOUR FROM order_date) < 12 THEN 'Morning'
-            WHEN EXTRACT(HOUR FROM order_date) >= 12 AND EXTRACT(HOUR FROM order_date) < 17 THEN 'Afternoon'
-            WHEN EXTRACT(HOUR FROM order_date) >= 17 AND EXTRACT(HOUR FROM order_date) < 22 THEN 'Evening'
+            WHEN EXTRACT(HOUR FROM order_date) >= 5
+                 AND EXTRACT(HOUR FROM order_date) < 12
+                THEN 'Morning'
+
+            WHEN EXTRACT(HOUR FROM order_date) >= 12
+                 AND EXTRACT(HOUR FROM order_date) < 17
+                THEN 'Afternoon'
+
+            WHEN EXTRACT(HOUR FROM order_date) >= 17
+                 AND EXTRACT(HOUR FROM order_date) < 22
+                THEN 'Evening'
+
             ELSE 'Night'
+
         END AS order_time_of_day,
 
         DATE_TRUNC('week', order_date) AS order_week,
@@ -86,10 +141,21 @@ transformed AS (
         DATEDIFF(day, shipping_date, delivery_date) AS shipping_days,
 
         CASE
-            WHEN delivery_date IS NOT NULL AND delivery_date <= estimated_delivery_date THEN 'On Time'
-            WHEN delivery_date IS NOT NULL AND delivery_date > estimated_delivery_date THEN 'Delayed'
-            WHEN delivery_date IS NULL AND CURRENT_DATE() > estimated_delivery_date THEN 'Potentially Delayed'
+
+            WHEN delivery_date IS NOT NULL
+                 AND delivery_date <= estimated_delivery_date
+                THEN 'On Time'
+
+            WHEN delivery_date IS NOT NULL
+                 AND delivery_date > estimated_delivery_date
+                THEN 'Delayed'
+
+            WHEN delivery_date IS NULL
+                 AND CURRENT_DATE() > estimated_delivery_date
+                THEN 'Potentially Delayed'
+
             ELSE 'In Transit'
+
         END AS delivery_status,
 
         billing_street,
@@ -128,4 +194,5 @@ transformed AS (
 
 )
 
-SELECT * FROM transformed
+SELECT *
+FROM transformed
