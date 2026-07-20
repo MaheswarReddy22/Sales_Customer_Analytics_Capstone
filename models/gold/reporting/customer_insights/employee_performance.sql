@@ -1,43 +1,26 @@
 SELECT
 
-    e.employee_id,
+    de.employee_id,
+    de.full_name,
+    de.department,
+    de.role,
 
-    e.full_name,
+    COUNT(fs.order_id) AS total_orders,
 
-    e.role,
+    SUM(fs.line_revenue) AS total_sales,
 
-    e.department,
+    SUM(fs.profit_amount) AS total_profit,
 
-    e.performance_rating,
+    AVG(fs.processing_days) AS average_processing_days
 
-    e.target_achievement_percentage,
+FROM {{ ref('fact_sales') }} fs
 
-    e.orders_processed,
-
-    e.tenure,
-
-    COUNT(DISTINCT f.order_id) AS orders_handled,
-
-    ROUND(SUM(f.gross_sales_amount),2) AS total_sales,
-
-    ROUND(SUM(f.profit_amount),2) AS total_profit,
-
-    ROUND(AVG(f.profit_margin_percentage),2) AS average_profit_margin
-
-FROM {{ ref('fact_sales') }} f
-
-JOIN {{ ref('dim_employee') }} e
-    ON f.employee_key = e.employee_key
+JOIN {{ ref('dim_employee') }} de
+ON fs.employee_key = de.employee_key
 
 GROUP BY
 
-    e.employee_id,
-    e.full_name,
-    e.role,
-    e.department,
-    e.performance_rating,
-    e.target_achievement_percentage,
-    e.orders_processed,
-    e.tenure
-
-ORDER BY total_sales DESC
+    de.employee_id,
+    de.full_name,
+    de.department,
+    de.role

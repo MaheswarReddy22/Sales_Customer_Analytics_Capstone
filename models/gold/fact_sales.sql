@@ -35,7 +35,7 @@ allocated AS (
             ELSE 0
         END AS allocated_tax_amount,
 
-        (quantity * unit_price * item_discount_amount) AS discount_amount_dollars
+        (quantity * unit_price * (item_discount_amount / 100.0)) AS discount_amount_dollars
 
     FROM orders
 

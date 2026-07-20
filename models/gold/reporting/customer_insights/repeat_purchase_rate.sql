@@ -1,32 +1,24 @@
-WITH customer_order_counts AS (
+WITH customer_orders AS (
 
     SELECT
 
-        c.customer_id,
+        customer_key,
 
-        COUNT(DISTINCT f.order_id) AS order_count
+        COUNT(DISTINCT order_id) AS order_count
 
-    FROM {{ ref('fact_sales') }} f
+    FROM {{ ref('fact_sales') }}
 
-    JOIN {{ ref('dim_customer') }} c
-        ON f.customer_key = c.customer_key
-
-    GROUP BY c.customer_id
+    GROUP BY customer_key
 
 )
 
 SELECT
 
-    COUNT(*) AS total_customers,
-
-    COUNT(CASE WHEN order_count > 1 THEN 1 END) AS repeat_customers,
-
-    COUNT(CASE WHEN order_count = 1 THEN 1 END) AS one_time_customers,
-
     ROUND(
-        COUNT(CASE WHEN order_count > 1 THEN 1 END) * 100.0
-        / NULLIF(COUNT(*),0),
+        COUNT(DISTINCT CASE WHEN order_count > 1 THEN customer_key END)
+        * 100.0
+        / COUNT(DISTINCT customer_key),
         2
     ) AS repeat_purchase_rate
 
-FROM customer_order_counts
+FROM customer_orders
