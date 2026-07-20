@@ -44,4 +44,4 @@ GROUP BY
 ORDER BY
 
     e.tenure DESC,
-    total_sales DESC;
+    total_sales DESC

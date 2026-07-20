@@ -43,4 +43,4 @@ GROUP BY
 ORDER BY
 
     s.region,
-    regional_rank;
+    regional_rank

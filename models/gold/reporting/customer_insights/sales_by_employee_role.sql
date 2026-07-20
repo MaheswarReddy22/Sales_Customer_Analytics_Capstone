@@ -26,4 +26,4 @@ JOIN {{ ref('dim_employee') }} e
 
 GROUP BY e.role
 
-ORDER BY total_sales DESC;
+ORDER BY total_sales DESC

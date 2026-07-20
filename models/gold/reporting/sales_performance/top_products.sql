@@ -29,4 +29,4 @@ GROUP BY
     p.category,
     p.brand
 
-ORDER BY sales_rank;
+ORDER BY sales_rank
