@@ -29,4 +29,4 @@ SELECT
         2
     ) AS repeat_purchase_rate
 
-FROM customer_order_counts;
+FROM customer_order_counts

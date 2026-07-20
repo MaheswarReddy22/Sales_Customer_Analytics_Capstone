@@ -39,4 +39,4 @@ GROUP BY
     c.loyalty_tier,
     c.income_bracket
 
-ORDER BY total_revenue DESC;
+ORDER BY total_revenue DESC

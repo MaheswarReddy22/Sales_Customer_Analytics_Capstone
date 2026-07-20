@@ -42,4 +42,4 @@ GROUP BY
     c.age_segment,
     c.registration_date
 
-ORDER BY lifetime_value DESC;
+ORDER BY lifetime_value DESC

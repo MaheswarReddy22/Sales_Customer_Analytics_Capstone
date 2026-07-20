@@ -48,4 +48,4 @@ GROUP BY
     c.age_segment,
     c.income_bracket
 
-ORDER BY total_spent DESC;
+ORDER BY total_spent DESC

@@ -38,4 +38,4 @@ GROUP BY
 ORDER BY
     s.region,
     d.year,
-    d.month;
+    d.month

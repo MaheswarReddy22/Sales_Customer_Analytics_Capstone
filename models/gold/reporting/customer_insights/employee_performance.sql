@@ -40,4 +40,4 @@ GROUP BY
     e.orders_processed,
     e.tenure
 
-ORDER BY total_sales DESC;
+ORDER BY total_sales DESC
